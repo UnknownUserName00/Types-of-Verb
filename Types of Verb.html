@@ -1,0 +1,370 @@
+<! DOCTYPE html>
+<head>
+    <title></title>
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0"/>
+    <style>
+        hr {
+            border: black solid 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        function JSONformat2Arrays(listLength, namesLength, namesArray, listArray) {
+            previousNum = 0;
+            collectString = "{\"list\": [{";
+            for (i = 0; i < listLength; i++) {
+                if ((i % namesLength) != 0) {
+                    collectString = collectString + ", ";
+                }
+
+                if ((i % namesLength) == 0 && (i != 0)) {
+                    previousNum = i;
+                    collectString = collectString + "},{";
+                }
+                referNum = i - previousNum;
+                collectString = collectString + "\"" + namesArray[referNum] + "\": \"" + listArray[i] + "\"";
+            }
+            collectString = collectString + "}]}";
+            convert = JSON.parse(collectString);
+        }
+
+        function resultDataTensesList(resultDataListId) {
+            displayResult = "";
+            for (i = 0; i < convert.list.length; i++) {
+                if (convert.list[i].rowSpan == 0) {
+                    spanName = '';
+                }
+
+                else {
+                    spanName = '<th rowspan = "' + convert.list[i].rowSpan + '">' + convert.list[i].rowSpanName + '</th>';
+                }
+
+                displayResult = displayResult + '<tr align = "center">'
+                    + '<th>' + (i + 1) + ')</th>'
+                    + '<td>' + convert.list[i].Verb + '</td>'
+                    + spanName
+                    + '<td>' + convert.list[i].Past + '</td>'
+                    + '<td>' + convert.list[i].Present + '</td>'
+                    + '<td>' + convert.list[i].Future + '</td>'
+                + '</tr>';
+            }
+            // document.getElementById("resultDataSimpleTenseList").outerHTML = displayResult;
+            document.getElementById(resultDataListId).outerHTML = displayResult;
+        }
+
+        function resultDataIrregularVerbList(resultDataListId) {
+            displayResult = "";
+            for (i = 0; i < convert.list.length; i++) {
+                displayResult = displayResult + '<tr align = "center">'
+                    + '<th>' + (i + 1) + ')</th>'
+                    + '<td>' + convert.list[i].BaseForm + '</td>'
+                    + '<td>' + convert.list[i].PastTense + '</td>'
+                    + '<td>' + convert.list[i].PastParticiple + '</td>'
+                + '</tr>';
+            }
+            // document.getElementById("resultDataSimpleTenseList").outerHTML = displayResult;
+            document.getElementById(resultDataListId).outerHTML = displayResult;
+        }
+    </script>
+
+    <h2 align = "center">Tenses of Verb</h2>
+    <table border = "2" align = "center">
+        <tr>
+            <th>#</th>
+            <th>Verb</th>
+            <td></td>
+            <th>Past</th>
+            <th>Present</th>
+            <th>Future</th>
+        </tr>
+        <tr>
+            <th colspan = "3">Formula</th>
+
+
+            <th>Subject + Regular Verb(-ed)</th>
+            <th>Subject + Verb(-s)</th>
+            <th>Subject + "WILL" + Verb</th>
+        </tr>
+        <tr id = "displayDataListSimpleTenseList"></tr>
+
+        <tr>
+            <td colspan = "6"><br/></td>
+        </tr>
+
+        <tr>
+            <th colspan = "3">Formula</th>
+
+
+            <th>Subject + Auxiliary Verb "HAD" + Past Participle</th>
+            <th>Subject + Auxiliary Verb "HAVE / HAS" + Past Participle</th>
+            <th>Subject + "WILL HAVE" + Verb(-ed)</th>
+        </tr>
+        <tr id = "displayDataListPerfectTenseList"></tr>
+
+        <tr>
+            <td colspan = "6"><br/></td>
+        </tr>
+
+        <tr>
+            <th colspan = "3">Formula</th>
+
+
+            <th>Subject + Auxiliary Verb "WAS / WERE" + Verb(-ing)</th>
+            <th>Subject + "AM / ARE / IS" + Verb(-ing)</th>
+            <th>Subject + "WILL BE" + Verb(-ing)</th>
+        </tr>
+        <tr id = "displayDataListContinuousOrProgressiveTenseList"></tr>
+
+        <tr>
+            <td colspan = "6"><br/></td>
+        </tr>
+
+        <tr>
+            <th colspan = "3">Formula</th>
+
+
+            <th>Subject + Auxiliary Verb "HAD" + Past Participle "BEEN" + Verb(-ing)</th>
+            <th>Subject + Auxiliary Verb "HAVE / HAS" + "BEEN" + Verb(-ing)</th>
+            <th>Subject + "WILL HAVE BEEN" + Verb(-ing)</th>
+        </tr>
+        <tr id = "displayDataListPerfectContinuousOrProgressiveTenseList"></tr>
+    </table>
+    <script>
+        // Simple Tense
+        // Past Simple: Subject + Regular Verb(-ed)
+        // Present Simple: Subject + Verb(-s)
+        // Future Simple: Subject + "WILL" + Verb
+        dataNames = ["Verb", "rowSpan", "rowSpanName", "Past", "Present", "Future"];
+
+        dataList = ["dance", 5, "Simple", "danced", "dance", "will dance",
+            "help", 0, "", "helped", "help", "will help",
+            "play", 0, "", "played", "play", "will play",
+            "study", 0, "", "studied", "study", "(will / am going to) study",
+            "travel", 0, "", "traveled", "travel", "will travel"];
+
+        JSONformat2Arrays(dataList.length, dataNames.length, dataNames, dataList);
+        resultDataTensesList("displayDataListSimpleTenseList");
+
+
+        // Perfect Tense
+        // Past Perfect Simple: Subject + Auxiliary Verb "HAD" + Past Participle
+        // Present Perfect: Subject + Auxiliary Verb "HAVE / HAS" + Past Participle
+        // Future perfect: Subject + "WILL HAVE" + Verb(-ed)
+        dataNames = ["Verb", "rowSpan", "rowSpanName", "Past", "Present", "Future"];
+
+        dataList = ["dance", 5, "Perfect", "had danced", "have danced", "will have danced",
+            "help", 0, "", "had helped", "have helped", "will have helped",
+            "play", 0, "", "had played", "have played", "will have played",
+            "study", 0, "", "had studied", "have studied", "(will have / am going to have) studied",
+            "travel", 0, "", "had traveled", "(has / have) traveled", "will have traveled"];
+
+        JSONformat2Arrays(dataList.length, dataNames.length, dataNames, dataList);
+        resultDataTensesList("displayDataListPerfectTenseList");
+
+
+        // Continuous or Progressive Tense
+        // Past Continuous: Subject + Auxiliary Verb "WAS / WERE" + Verb(-ing)
+        // Present Continuous: Subject + "AM / ARE / IS" + Verb(-ing)
+        // Future Continuous: Subject + "WILL BE" + Verb(-ing)
+        dataNames = ["Verb", "rowSpan", "rowSpanName", "Past", "Present", "Future"];
+
+        dataList = ["dance", 5, "Continuous or Progressive", "was dancing", "am dancing", "will be dancing",
+            "help", 0, "", "was helping", "am helping", "will be helping",
+            "play", 0, "", "were playing", "are playing", "will be playing",
+            "study", 0, "", "was studying", "am studying", "(will be / am going to be) studying",
+            "travel", 0, "", "(was / were) traveling", "(am / is / are) traveling", "will be traveling"];
+
+        JSONformat2Arrays(dataList.length, dataNames.length, dataNames, dataList);
+        resultDataTensesList("displayDataListContinuousOrProgressiveTenseList");
+
+
+        // Perfect Continuous or Progressive Tense
+        // Past Perfect Continuous: Subject + Auxiliary Verb "HAD" + Past Participle "BEEN" + Verb(-ing)
+        // Present Perfect Continuous: Subject + Auxiliary Verb "HAVE / HAS" + "BEEN" + Verb(-ing)
+        // Future Perfect Continuous: Subject + "WILL HAVE BEEN" + Verb(-ing)
+        dataNames = ["Verb", "rowSpan", "rowSpanName", "Past", "Present", "Future"];
+
+        dataList = ["dance", 5, "Perfect Continuous or Progressive", "had been dancing", "have been dancing", "will have been dancing",
+            "help", 0, "", "had been helping", "have been helping", "will have been helping",
+            "play", 0, "", "had been playing", "have been playing", "will have been playing",
+            "study", 0, "", "had been studying", "have been studying", "(will have been / am going to have been) studying",
+            "travel", 0, "", "had been traveling", "(has / have) been traveling", "will have been traveling"];
+
+        JSONformat2Arrays(dataList.length, dataNames.length, dataNames, dataList);
+        resultDataTensesList("displayDataListPerfectContinuousOrProgressiveTenseList");
+    </script>
+
+
+    <hr/>
+
+
+    <h2 align = "center">Irregular Verb</h2>
+    <table border = "2" align = "center">
+        <tr>
+            <th>#</th>
+            <th>Base Form</th>
+            <th>Past Tense</th>
+            <th>Past Participle</th>
+        </tr>
+        <tr id = "displayDataListIrregularVerb"></tr>
+<!--
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+-->
+    </table>
+    <script>
+        dataNames = ["BaseForm", "PastTense", "PastParticiple"];
+
+        dataList = ["arise", "arose", "arisen",
+            "awake", "awoke", "awoken",
+            "be", "was / were", "been",
+            "bear", "bore", "born(e)",
+            "beat", "beat", "beaten",
+            "become", "became", "become",
+            "begin", "began", "begun",
+            "bend", "bent", "bent",
+            "bet", "bet", "bet",
+            "bind", "bound", "bound",
+            "bite", "bit", "bitten",
+            "bleed", "bled", "bled",
+            "blow", "blew", "blown",
+            "break", "broke", "broken",
+            "breed", "bred", "bred",
+            "bring", "brought", "brought",
+            "broadcast", "broadcast", "broadcast",
+            "build", "built", "built",
+            "burn", "burnt / burned", "burnt / burned",
+            "burst", "burst", "burst",
+            "buy", "bought", "bought",
+            "can", "could", "...(been able)",
+            "catch", "caught", "caught",
+            "choose", "chose", "chosen",
+            "cling", "clung", "clung",
+            "come", "came", "come",
+            "cost", "cost", "cost",
+            "creep", "crept", "crept",
+            "cut", "cut", "cut",
+            "deal", "dealt", "dealt",
+            "dig", "dug", "dug",
+            "do", "did", "done",
+            "draw", "drew", "drawn",
+            "dream", "dreamt / dreamed", "dreamt / dreamed",
+            "drink", "drank", "drunk",
+            "drive", "drove", "driven",
+            "eat", "ate", "eaten",
+            "fall", "fell", "fallen",
+            "feed", "fed", "fed",
+            "feel", "felt", "felt",
+            "fight", "fought", "fought",
+            "find", "found", "found",
+            "fly", "flew", "flown",
+            "forbid", "forbade", "forbidden",
+            "forget", "forgot", "forgotten",
+            "forgive", "forgave", "forgiven",
+            "freeze", "froze", "frozen",
+            "get", "got", "got",
+            "give", "gave", "given",
+            "go", "went", "gone",
+            "grind", "ground", "ground",
+            "grow", "grew", "grown",
+            "hang", "hung", "hung",
+            "have", "had", "had",
+            "hear", "heard", "heard",
+            "hide", "hid", "hidden",
+            "hit", "hit", "hit",
+            "hold", "held", "held",
+            "hurt", "hurt", "hurt",
+            "keep", "kept", "kept",
+            "kneel", "knelt", "knelt",
+            "know", "knew", "known",
+            "lay", "laid", "laid",
+            "lead", "led", "led",
+            "lean", "leant / leaned", "leant / leaned",
+            "learn", "learnt / learned", "learnt / learned",
+            "leave", "left", "left",
+            "lend", "lent", "lent",
+            "lie (in bed)", "lay", "lain",
+            "lie (to not tell the truth)", "lied", "lied",
+            "light", "lit / lighted", "lit / lighted",
+            "lose", "lost", "lost",
+            "make", "made", "made",
+            "may", "might", "...",
+            "mean", "meant", "meant",
+            "meet", "met", "met",
+            "mow", "mowed", "mown / mowed",
+            "must", "had to", "...",
+            "overtake", "overtook", "overtaken",
+            "pay", "paid", "paid",
+            "put", "put", "put",
+            "read", "read", "read",
+            "ride", "rode", "ridden",
+            "ring", "rang", "rung",
+            "rise", "rose", "risen",
+            "run", "ran", "run",
+            "saw", "sawed", "sawn / sawed",
+            "say", "said", "said",
+            "see", "saw", "seen",
+            "sell", "sold", "sold",
+            "send", "sent", "sent",
+            "set", "set", "set",
+            "sew", "sewed", "sewn / sewed",
+            "shake", "shook", "shaken",
+            "shall", "should", "...",
+            "shed", "shed", "shed",
+            "shine", "shone", "shone",
+            "shoot", "shot", "shot",
+            "show", "showed", "shown",
+            "shrink", "shrank", "shrunk",
+            "shut", "shut", "shut",
+            "sing", "sang", "sung",
+            "sink", "sank", "sunk",
+            "sit", "sat", "sat",
+            "sleep", "slept", "slept",
+            "slide", "slid", "slid",
+            "smell", "smelt", "smelt",
+            "sow", "sowed", "sown / sowed",
+            "speak", "spoke", "spoken",
+            "spell", "spelt / spelled", "spelt / spelled",
+            "spend", "spent", "spent",
+            "spill", "spilt / spilled", "spilt / spilled",
+            "spin", "spun", "spun",
+            "spit", "spat", "spat",
+            "spread", "spread", "spread",
+            "stand", "stood", "stood",
+            "steal", "stole", "stolen",
+            "stick", "stuck", "stuck",
+            "sting", "stung", "stung",
+            "stink", "stank", "stunk",
+            "strike", "struck", "struck",
+            "swear", "swore", "sworn",
+            "sweep", "swept", "swept",
+            "swell", "swelled", "swollen / swelled",
+            "swim", "swam", "swum",
+            "swing", "swung", "swung",
+            "take", "took", "taken",
+            "teach", "taught", "taught",
+            "tear", "tore", "torn",
+            "tell", "told", "told",
+            "think", "thought", "thought",
+            "throw", "threw", "thrown",
+            "understand", "understood", "understood",
+            "wake", "woke", "woken",
+            "wear", "wore", "worn",
+            "weep", "wept", "wept",
+            "will", "would", "...",
+            "win", "won", "won",
+            "wind", "would", "would",
+            "write", "wrote", "written"];
+
+        JSONformat2Arrays(dataList.length, dataNames.length, dataNames, dataList);
+        resultDataIrregularVerbList("displayDataListIrregularVerb");
+    </script>
+
+</body>
+</html>
